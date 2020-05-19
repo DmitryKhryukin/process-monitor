@@ -350,7 +350,7 @@ MigrationBackup/
 .ionide/
 
 # Jetbrains IDEs: Rider etc.
-*/.idea*
+*.idea*
 
 # js related files
 node_modules
