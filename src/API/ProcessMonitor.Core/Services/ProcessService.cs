@@ -13,9 +13,9 @@ namespace ProcessMonitor.Core.Services
         {
             var processes = Process.GetProcesses();
 
-
-
-            return processes.Select(ProcessMapper.MapToDto).ToList();
+            return processes.Select(ProcessMapper.MapToDto)
+                            .OrderBy(x => x.ProcessName)
+                            .ToList();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace ProcessMonitor.Core.Mappers
             {
                 // it's a bug related to TotalProcessorTime, UserProcessorTime and PrivilegedProcessorTime, so can't use it for now - check link above
                 Id = process.Id,
-                ProcessName = process.ProcessName,
+                ProcessName = string.IsNullOrWhiteSpace(process.ProcessName) ? $"Id : {process.Id}" : process.ProcessName,
                 ThreadsCount = process.Threads.Count,
                 PhysicalMemoryUsage = process.WorkingSet64,
                 //UserProcessorTime  = process.UserProcessorTime.TotalMilliseconds,
