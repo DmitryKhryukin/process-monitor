@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading;
 
 namespace ProcessMonitor.API.Controllers
@@ -25,24 +22,25 @@ namespace ProcessMonitor.API.Controllers
         [HttpGet]
         public async Task GetProcessesAsync(CancellationToken cancellationToken)
         {
-            string[] data = new string[] {
-                "Hello World!",
-                "Hello Galaxy!",
-                "Hello Universe!"
-            };
-
             Response.Headers.Add("Content-Type", "text/event-stream");
 
-            for (int i = 0; i < data.Length; i++)
+            _logger.Log(LogLevel.Information, "Connection open");
+
+            while (!cancellationToken.IsCancellationRequested)
             {
+                Console.WriteLine("Update");
+                _logger.Log(LogLevel.Information, "Get processes");
+
                 await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
-                string dataItem = $"data: {data[i]}\n\n";
+                string dataItem = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
                 byte[] dataItemBytes = Encoding.ASCII.GetBytes(dataItem);
                 await Response.Body.WriteAsync(dataItemBytes,0,dataItemBytes.Length, cancellationToken);
                 await Response.Body.FlushAsync(cancellationToken);
             }
 
+            _logger.Log(LogLevel.Information, "Connection closed");
+           // Console.WriteLine("Connection closed");
         }
     }
 }
