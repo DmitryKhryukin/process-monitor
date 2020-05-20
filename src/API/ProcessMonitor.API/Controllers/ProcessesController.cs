@@ -1,10 +1,11 @@
 using System;
-using System.Globalization;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading;
+using ProcessMonitor.Core.Services.Interfaces;
 
 namespace ProcessMonitor.API.Controllers
 {
@@ -13,9 +14,11 @@ namespace ProcessMonitor.API.Controllers
     public class ProcessesController : ControllerBase
     {
         private readonly ILogger<ProcessesController> _logger;
+        private readonly IProcessService _processService;
 
-        public ProcessesController(ILogger<ProcessesController> logger)
+        public ProcessesController(IProcessService processService, ILogger<ProcessesController> logger)
         {
+            _processService = processService;
             _logger = logger;
         }
 
@@ -28,19 +31,19 @@ namespace ProcessMonitor.API.Controllers
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                Console.WriteLine("Update");
                 _logger.Log(LogLevel.Information, "Get processes");
 
                 await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
-                string dataItem = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                var processes = _processService.GetCurrentProcesses();
 
-                byte[] dataItemBytes = Encoding.ASCII.GetBytes(dataItem);
+                var jsonString = JsonSerializer.Serialize(processes);
+                byte[] dataItemBytes = Encoding.ASCII.GetBytes(jsonString);
+
                 await Response.Body.WriteAsync(dataItemBytes,0,dataItemBytes.Length, cancellationToken);
                 await Response.Body.FlushAsync(cancellationToken);
             }
 
             _logger.Log(LogLevel.Information, "Connection closed");
-           // Console.WriteLine("Connection closed");
         }
     }
 }

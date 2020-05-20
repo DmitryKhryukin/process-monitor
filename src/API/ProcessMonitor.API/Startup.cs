@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProcessMonitor.Core.Services;
+using ProcessMonitor.Core.Services.Interfaces;
 
 namespace ProcessMonitor.API
 {
@@ -18,6 +20,8 @@ namespace ProcessMonitor.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IProcessService, ProcessService>();
+
             services.AddControllers();
         }
 
