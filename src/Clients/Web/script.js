@@ -1,19 +1,24 @@
 'use strict'
 
-
 let eventSource = new EventSource('https://localhost:5001/api/processes');
+let loadingDiv = document.getElementById("loading");
+let processesInfoList = document.getElementById("processesInfo");
 
 eventSource.addEventListener("open", function(e) { 
-    console.log(e.data);
-    console.log(JSON.stringify(e));
-    
-  });
+    loadingDiv.hidden = false;
+});
 
 eventSource.addEventListener("message", function(e) {
-    console.log("MESSAGE");
-    console.log(JSON.stringify(e));
-    document.getElementById("processesInfo").innerHTML = JSON.stringify(e.data);
-    console.log(e.data);
+    
+    loadingDiv.hidden = true;
+    processesInfoList.textContent = '';
+
+    var data = JSON.parse(e.data);
+    data.forEach(function(item, index) {
+        var elem = document.createElement("li");
+        elem.innerHTML = "<div>"+item.ProcessName+"</div>";
+        processesInfoList.appendChild(elem);
+    });
   });
 
 eventSource.addEventListener("error", function(e) {
