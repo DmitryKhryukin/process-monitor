@@ -349,8 +349,9 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-# Jetbrains IDEs: Rider etc.
+# IDEs: Rider etc.
 *.idea*
+*.vscode
 
 # js related files
 node_modules
