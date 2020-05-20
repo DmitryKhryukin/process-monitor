@@ -16,11 +16,17 @@ namespace ProcessMonitor.Core.Mappers
         {
             return new ProcessDto()
             {
+                // it's a bug related to TotalProcessorTime, UserProcessorTime and PrivilegedProcessorTime, so can't use it for now - check link above
                 Id = process.Id,
                 ProcessName = process.ProcessName,
                 ThreadsCount = process.Threads.Count,
-                // it's a bug related to TotalProcessorTime, so can't use it for now - check link above
-                CpuTime = 1000 //x.TotalProcessorTime.TotalMilliseconds
+                PhysicalMemoryUsage = process.WorkingSet64,
+                //UserProcessorTime  = process.UserProcessorTime.TotalMilliseconds,
+                //PrivilegedProcessorTime = process.PrivilegedProcessorTime.TotalMilliseconds,
+                //TotalProcessorTime = 1000, //x.TotalProcessorTime.TotalMilliseconds
+                PagedSystemMemorySize = process.PagedSystemMemorySize64,
+                PagedMemorySize = process.PagedMemorySize64,
+                State = process.Responding ? "running" : "sleeping",
             };
         }
     }

@@ -13,6 +13,8 @@ namespace ProcessMonitor.Core.Services
         {
             var processes = Process.GetProcesses();
 
+
+
             return processes.Select(ProcessMapper.MapToDto).ToList();
         }
     }
