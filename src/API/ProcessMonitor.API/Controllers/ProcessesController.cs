@@ -36,8 +36,7 @@ namespace ProcessMonitor.API.Controllers
                 await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
                 var processes = _processService.GetCurrentProcesses();
 
-                var jsonString = JsonSerializer.Serialize(processes);
-                byte[] dataItemBytes = Encoding.ASCII.GetBytes(jsonString);
+                byte[] dataItemBytes = JsonSerializer.SerializeToUtf8Bytes(processes);
 
                 await Response.Body.WriteAsync(dataItemBytes,0,dataItemBytes.Length, cancellationToken);
                 await Response.Body.FlushAsync(cancellationToken);
