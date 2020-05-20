@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading;
+using Microsoft.AspNetCore.Http;
 using ProcessMonitor.Core.Services.Interfaces;
 
 namespace ProcessMonitor.API.Controllers
@@ -35,9 +36,9 @@ namespace ProcessMonitor.API.Controllers
                 await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
                 var processes = _processService.GetCurrentProcesses();
 
-                byte[] dataItemBytes = JsonSerializer.SerializeToUtf8Bytes(processes);
-
-                await Response.Body.WriteAsync(dataItemBytes,0,dataItemBytes.Length, cancellationToken);
+                string jsonCustomer = JsonSerializer.Serialize(processes);
+                string data = $"data: {jsonCustomer}\n\n";
+                await Response.WriteAsync(data, cancellationToken: cancellationToken);
                 await Response.Body.FlushAsync(cancellationToken);
             }
 
