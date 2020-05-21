@@ -30,7 +30,7 @@ namespace ProcessMonitor.Core.Services
             var processes = Process.GetProcesses();
 
             var verifiableProcesses = GetVerifiableProcesses(processes);
-            var cpuLoad = await GetCpuLoadAsync(cpuMeasurementWindow,
+            var cpuLoad = await GetTotalCpuLoadAsync(cpuMeasurementWindow,
                 verifiableProcesses,
                 cancellationToken);
 
@@ -64,15 +64,15 @@ namespace ProcessMonitor.Core.Services
                 }
                 catch (Exception e)
                 {
-                    //var message = $"ProcessName: {process.ProcessName}; ProcessId: {process.Id}; Error Message:{e.Message}";
-                    //_logger.Log(LogLevel.Warning, message);
+                    var message = $"ProcessName: {process.ProcessName}; ProcessId: {process.Id}; Error Message:{e.Message}";
+                    _logger.Log(LogLevel.Warning, message);
                 }
             }
 
             return result;
         }
 
-        private async Task<double> GetCpuLoadAsync(int cpuMeasurementWindowSec,
+        private async Task<double> GetTotalCpuLoadAsync(int cpuMeasurementWindowSec,
             IEnumerable<Process> processes,
             CancellationToken cancellationToken)
         {
