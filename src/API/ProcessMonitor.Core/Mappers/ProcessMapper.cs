@@ -36,7 +36,7 @@ namespace ProcessMonitor.Core.Mappers
                 processDto = null;
 
                 var message = $"ProcessName: {process.ProcessName}; ProcessId: {process.Id}; Error Message:{e.Message}";
-                _logger.Log(LogLevel.Error, message);
+                _logger.Log(LogLevel.Warning, message);
             }
 
             return result;
