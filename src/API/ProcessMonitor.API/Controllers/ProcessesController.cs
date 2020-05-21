@@ -41,8 +41,6 @@ namespace ProcessMonitor.API.Controllers
                 await Response.WriteAsync(data, cancellationToken: cancellationToken);
                 await Response.Body.FlushAsync(cancellationToken);
             }
-
-            _logger.Log(LogLevel.Information, "Connection closed");
         }
     }
 }
