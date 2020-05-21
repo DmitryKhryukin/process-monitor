@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProcessMonitor.Core.Mappers;
+using ProcessMonitor.Core.Mappers.Interfaces;
 using ProcessMonitor.Core.Services;
 using ProcessMonitor.Core.Services.Interfaces;
 
@@ -22,6 +24,7 @@ namespace ProcessMonitor.API
         {
             services.AddCors();
 
+            services.AddScoped<IProcessMapper, ProcessMapper>();
             services.AddScoped<IProcessService, ProcessService>();
 
             services.AddControllers();
