@@ -15,13 +15,17 @@ eventSource.addEventListener("message", function (e) {
 
   var data = JSON.parse(e.data);
   let processTable = generateProcessTable(data);
-  processesInfo.appendChild(processTable);
+  processesInfoList.appendChild(processTable);
 });
 
 eventSource.addEventListener("error", function (e) {
   console.log("error");
-  console.log(JSON.stringify(e));
-  console.log(e.data);
+  console.log(e);
+
+  processesInfoList.textContent = '';
+  let errorInfo = document.createElement("div");
+  errorInfo.innerHTML = "Server error";
+  processesInfoList.appendChild(errorInfo);
 });
 
 function generateProcessTable(processes) {
@@ -68,13 +72,8 @@ function generateProcessTable(processes) {
 
     return tbl;
   } else {
-    return document.createElement("div").innerHTML("No detaild information about processes");
+    let noInfoMessage = document.createElement("div");
+    noInfoMessage.innerHTML = "No information about processes";
+    return noInfoMessage;
   }
-}
-
-function getProcessRowHtml(process) {
-
-
-  "<div>" + item.ProcessName + "</div>"
-
 }
