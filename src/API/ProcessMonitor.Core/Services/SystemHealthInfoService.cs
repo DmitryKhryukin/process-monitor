@@ -11,10 +11,6 @@ using ProcessMonitor.Core.Services.Interfaces;
 
 namespace ProcessMonitor.Core.Services
 {
-    /// <summary>
-    /// it's a .NET Core bug related to TotalProcessorTime, UserProcessorTime and PrivilegedProcessorTime
-    /// https://github.com/dotnet/runtime/issues/36777
-    /// </summary>
     public class SystemHealthInfoService : ISystemHealthInfoService
     {
         private readonly IProcessMapper _processMapper;
