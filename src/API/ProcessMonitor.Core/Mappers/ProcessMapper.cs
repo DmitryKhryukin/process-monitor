@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics;
-using Microsoft.Extensions.Logging;
 using ProcessMonitor.Core.DTOs;
 using ProcessMonitor.Core.Mappers.Interfaces;
 
@@ -8,43 +6,7 @@ namespace ProcessMonitor.Core.Mappers
 {
     public class ProcessMapper : IProcessMapper
     {
-        private readonly ILogger<ProcessMapper> _logger;
-
-        public ProcessMapper(ILogger<ProcessMapper> logger)
-        {
-            _logger = logger;
-        }
-
-        /// <summary>
-        /// it's a bug related to TotalProcessorTime, UserProcessorTime and PrivilegedProcessorTime
-        /// check the links below
-        /// https://github.com/dotnet/runtime/issues/36777
-        /// https://stackoverflow.com/questions/61921540/process-prototalprocessortime-throws-invalidoperationexception-exception-on-maco
-        /// </summary>
-        /// <param name="process"></param>
-        /// <param name="processDto"></param>
-        /// <returns></returns>
-        public bool TryMapToDto(Process process, out ProcessDto processDto)
-        {
-            var result = true;
-
-            try
-            {
-                processDto = MapToDto(process);
-            }
-            catch(Exception e)
-            {
-                result = false;
-                processDto = null;
-
-                var message = $"ProcessName: {process.ProcessName}; ProcessId: {process.Id}; Error Message:{e.Message}";
-                _logger.Log(LogLevel.Warning, message);
-            }
-
-            return result;
-        }
-
-        private ProcessDto MapToDto(Process process)
+        public ProcessDto MapToDto(Process process)
         {
             return new ProcessDto()
             {
