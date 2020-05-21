@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using ProcessMonitor.Core.DTOs;
 using ProcessMonitor.Core.Mappers.Interfaces;
 
@@ -7,6 +8,13 @@ namespace ProcessMonitor.Core.Mappers
 {
     public class ProcessMapper : IProcessMapper
     {
+        private readonly ILogger<ProcessMapper> _logger;
+
+        public ProcessMapper(ILogger<ProcessMapper> logger)
+        {
+            _logger = logger;
+        }
+
         /// <summary>
         /// it's a bug related to TotalProcessorTime, UserProcessorTime and PrivilegedProcessorTime
         /// check the links above
@@ -26,6 +34,9 @@ namespace ProcessMonitor.Core.Mappers
             {
                 result = false;
                 processDto = null;
+
+                var message = $"ProcessName: {process.ProcessName}; ProcessId: {process.Id}; Error Message:{e.Message}";
+                _logger.Log(LogLevel.Error, message);
             }
 
             return result;

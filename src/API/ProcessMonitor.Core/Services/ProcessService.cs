@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ProcessMonitor.Core.DTOs;
-using ProcessMonitor.Core.Mappers;
 using ProcessMonitor.Core.Mappers.Interfaces;
 using ProcessMonitor.Core.Services.Interfaces;
 
