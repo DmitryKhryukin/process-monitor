@@ -14,11 +14,11 @@ namespace ProcessMonitor.API.Controllers
     public class ProcessesController : ControllerBase
     {
         private readonly ILogger<ProcessesController> _logger;
-        private readonly IProcessService _processService;
+        private readonly ISystemHealthInfoService _systemHealthInfoService;
 
-        public ProcessesController(IProcessService processService, ILogger<ProcessesController> logger)
+        public ProcessesController(ISystemHealthInfoService systemHealthInfoService, ILogger<ProcessesController> logger)
         {
-            _processService = processService;
+            _systemHealthInfoService = systemHealthInfoService;
             _logger = logger;
         }
 
@@ -34,7 +34,7 @@ namespace ProcessMonitor.API.Controllers
                 _logger.Log(LogLevel.Information, "Get processes");
 
                 await Task.Delay(TimeSpan.FromSeconds(3), cancellationToken);
-                var processes = await _processService.GetCurrentProcesses();
+                var processes = await _systemHealthInfoService.GetCurrentProcesses();
 
                 string jsonCustomer = JsonSerializer.Serialize(processes);
                 string data = $"data: {jsonCustomer}\n\n";

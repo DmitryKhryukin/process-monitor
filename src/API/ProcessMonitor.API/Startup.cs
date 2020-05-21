@@ -26,7 +26,7 @@ namespace ProcessMonitor.API
             services.AddCors();
 
             services.AddScoped<IProcessMapper, ProcessMapper>();
-            services.AddScoped<IProcessService, ProcessService>();
+            services.AddScoped<ISystemHealthInfoService, SystemHealthInfoService>();
 
             services.AddControllers();
 

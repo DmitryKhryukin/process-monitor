@@ -4,7 +4,7 @@ using ProcessMonitor.Core.DTOs;
 
 namespace ProcessMonitor.Core.Services.Interfaces
 {
-    public interface IProcessService
+    public interface ISystemHealthInfoService
     {
         Task<IEnumerable<ProcessDto>> GetCurrentProcesses();
     }
