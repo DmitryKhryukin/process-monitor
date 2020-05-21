@@ -14,7 +14,7 @@ eventSource.addEventListener("message", function (e) {
   processesInfoList.textContent = '';
 
   var data = JSON.parse(e.data);
-  let processTable = generateProcessTable(data);
+  let processTable = generateProcessTable(data.Processes);
   processesInfoList.appendChild(processTable);
 });
 

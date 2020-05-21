@@ -16,6 +16,10 @@ namespace ProcessMonitor.API.Controllers
         private readonly ILogger<ProcessesController> _logger;
         private readonly ISystemHealthInfoService _systemHealthInfoService;
 
+        //TODO: make configurable or pass as parameters?
+        private const int CpuMeasurementWindowSec = 1;
+        private const int DelaySec = 3;
+
         public ProcessesController(ISystemHealthInfoService systemHealthInfoService, ILogger<ProcessesController> logger)
         {
             _systemHealthInfoService = systemHealthInfoService;
@@ -33,10 +37,10 @@ namespace ProcessMonitor.API.Controllers
             {
                 _logger.Log(LogLevel.Information, "Get processes");
 
-                await Task.Delay(TimeSpan.FromSeconds(3), cancellationToken);
-                var processes = await _systemHealthInfoService.GetCurrentProcesses();
+                await Task.Delay(TimeSpan.FromSeconds(DelaySec), cancellationToken);
+                var systemHealthInfo = await _systemHealthInfoService.GetSystemHealthInfo(CpuMeasurementWindowSec, cancellationToken);
 
-                string jsonCustomer = JsonSerializer.Serialize(processes);
+                string jsonCustomer = JsonSerializer.Serialize(systemHealthInfo);
                 string data = $"data: {jsonCustomer}\n\n";
                 await Response.WriteAsync(data, cancellationToken: cancellationToken);
                 await Response.Body.FlushAsync(cancellationToken);

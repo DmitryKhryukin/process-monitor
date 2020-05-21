@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using ProcessMonitor.Core.DTOs;
@@ -26,16 +27,25 @@ namespace ProcessMonitor.Core.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<ProcessDto>> GetCurrentProcesses()
+        public async Task<SystemHealthInfoDto> GetSystemHealthInfo(int cpuMeasurementWindow, CancellationToken cancellationToken)
         {
+            var result = new SystemHealthInfoDto();
+
             var processes = Process.GetProcesses();
 
             var verifiableProcesses = GetVerifiableProcesses(processes);
-            var cpuLoad = await GetCpuLoadAsync(TimeSpan.FromSeconds(1), verifiableProcesses);
+            var cpuLoad = await GetCpuLoadAsync(cpuMeasurementWindow,
+                verifiableProcesses,
+                cancellationToken);
 
-            _logger.Log(LogLevel.Information, $"CPU load = {cpuLoad}");
-
-            return verifiableProcesses.Select(_processMapper.MapToDto).OrderBy(x => x.ProcessName).ToList();
+            return new SystemHealthInfoDto()
+            {
+                CpuLoad = cpuLoad,
+                Processes = verifiableProcesses
+                                                .Select(_processMapper.MapToDto)
+                                                .OrderBy(x => x.ProcessName)
+                                                .ToList()
+            };
         }
 
         /// <summary>
@@ -56,27 +66,30 @@ namespace ProcessMonitor.Core.Services
                     var totalProcessTime = process.TotalProcessorTime;
                     result.Add(process);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     //var message = $"ProcessName: {process.ProcessName}; ProcessId: {process.Id}; Error Message:{e.Message}";
-                   //_logger.Log(LogLevel.Warning, message);
+                    //_logger.Log(LogLevel.Warning, message);
                 }
             }
 
             return result;
         }
 
-        private async Task<double> GetCpuLoadAsync(TimeSpan MeasurementWindow, IEnumerable<Process> processes)
+        private async Task<double> GetCpuLoadAsync(int cpuMeasurementWindowSec,
+            IEnumerable<Process> processes,
+            CancellationToken cancellationToken)
         {
             TimeSpan startCpuUsage = GetTotalProcessorTime(processes);
             Stopwatch timer = Stopwatch.StartNew();
 
-            await Task.Delay(MeasurementWindow);
+            await Task.Delay(TimeSpan.FromSeconds(cpuMeasurementWindowSec), cancellationToken);
 
             TimeSpan endCpuUsage = GetTotalProcessorTime(processes);
             timer.Stop();
 
-            return 100*(endCpuUsage - startCpuUsage).TotalMilliseconds / (Environment.ProcessorCount * timer.ElapsedMilliseconds);
+            return 100 * (endCpuUsage - startCpuUsage).TotalMilliseconds /
+                   (Environment.ProcessorCount * timer.ElapsedMilliseconds);
         }
 
         private TimeSpan GetTotalProcessorTime(IEnumerable<Process> processes)
