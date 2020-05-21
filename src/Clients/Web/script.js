@@ -1,21 +1,18 @@
 'use strict'
 
 let eventSource = new EventSource('https://localhost:5001/api/processes');
-let loadingDiv = document.getElementById("loading");
 let processesInfoList = document.getElementById("processesInfo");
 
 eventSource.addEventListener("open", function (e) {
-  loadingDiv.hidden = false;
 });
 
 eventSource.addEventListener("message", function (e) {
 
-  loadingDiv.hidden = true;
   processesInfoList.textContent = '';
 
   var data = JSON.parse(e.data);
-  let processTable = generateProcessTable(data.Processes);
   
+  let processTable = generateProcessTable(data.Processes);
   let cpuLoad = data.CpuLoad.toFixed(2); 
   let cpuLoadInfo = document.createElement("div");
   cpuLoadInfo.innerHTML = `CPU Load: ${cpuLoad}%`;
@@ -25,8 +22,6 @@ eventSource.addEventListener("message", function (e) {
 });
 
 eventSource.addEventListener("error", function (e) {
-  console.log("error");
-  console.log(e);
 
   processesInfoList.textContent = '';
   let errorInfo = document.createElement("div");
@@ -70,10 +65,7 @@ function generateProcessTable(processes) {
       tblBody.appendChild(row);
     }
 
-    // put the <tbody> in the <table>
     tbl.appendChild(tblBody);
-
-    // sets the border attribute of tbl to 2;
     tbl.setAttribute("border", "2");
 
     return tbl;
