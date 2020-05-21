@@ -55,8 +55,6 @@ namespace ProcessMonitor.Core.Mappers
                 UserProcessorTime  = process.UserProcessorTime.TotalMilliseconds,
                 PrivilegedProcessorTime = process.PrivilegedProcessorTime.TotalMilliseconds,
                 TotalProcessorTime = process.TotalProcessorTime.TotalMilliseconds,
-                PagedSystemMemorySize = process.PagedSystemMemorySize64,
-                PagedMemorySize = process.PagedMemorySize64,
                 State = process.Responding ? "running" : "sleeping",
             };
         }

@@ -11,8 +11,6 @@ namespace ProcessMonitor.Core.DTOs
         public long PhysicalMemoryUsage { get; set; }
         public double UserProcessorTime { get; set; }
         public double PrivilegedProcessorTime { get; set; }
-        public long PagedSystemMemorySize { get; set; }
-        public long PagedMemorySize { get; set; }
         public string State { get; set; }
     }
 }
