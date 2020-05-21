@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ProcessMonitor.Core.DTOs;
 
 namespace ProcessMonitor.Core.Services.Interfaces
 {
     public interface IProcessService
     {
-        IEnumerable<ProcessDto> GetCurrentProcesses();
+        Task<IEnumerable<ProcessDto>> GetCurrentProcesses();
     }
 }

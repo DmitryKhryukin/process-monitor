@@ -34,7 +34,7 @@ namespace ProcessMonitor.API.Controllers
                 _logger.Log(LogLevel.Information, "Get processes");
 
                 await Task.Delay(TimeSpan.FromSeconds(3), cancellationToken);
-                var processes = _processService.GetCurrentProcesses();
+                var processes = await _processService.GetCurrentProcesses();
 
                 string jsonCustomer = JsonSerializer.Serialize(processes);
                 string data = $"data: {jsonCustomer}\n\n";
