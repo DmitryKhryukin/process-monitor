@@ -17,7 +17,9 @@ namespace ProcessMonitor.Core.Mappers
 
         /// <summary>
         /// it's a bug related to TotalProcessorTime, UserProcessorTime and PrivilegedProcessorTime
-        /// check the links above
+        /// check the links below
+        /// https://github.com/dotnet/runtime/issues/36777
+        /// https://stackoverflow.com/questions/61921540/process-prototalprocessortime-throws-invalidoperationexception-exception-on-maco
         /// </summary>
         /// <param name="process"></param>
         /// <param name="processDto"></param>
@@ -42,12 +44,6 @@ namespace ProcessMonitor.Core.Mappers
             return result;
         }
 
-        /// <summary>
-        /// https://github.com/dotnet/runtime/issues/36777
-        /// https://stackoverflow.com/questions/61921540/process-prototalprocessortime-throws-invalidoperationexception-exception-on-maco
-        /// </summary>
-        /// <param name="process"></param>
-        /// <returns></returns>
         private ProcessDto MapToDto(Process process)
         {
             return new ProcessDto()
