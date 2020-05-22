@@ -77,7 +77,7 @@ How to use EventSource:
     eventSource.addEventListener("message", function (e) {
     
       // got an update from the server
-      // parse e.data to show updated info
+      // parse e.data json to show updated info
     });
     
     eventSource.addEventListener("error", function (e) {
@@ -87,5 +87,11 @@ How to use EventSource:
 
 You can find a web client example [here](https://github.com/DmitryKhryukin/process-monitor/tree/master/src/Clients/Web)
 
+## Known issues and roadblocks 
 
+We don't show all system processes because of the following issue:
+[Process Property TotalProcessorTime throws InvalidOperationException exception on macOS](https://github.com/dotnet/runtime/issues/36777)
 
+Currently we can't show CPU load because there is no way to calculate it using .NET Core on all platforms:
+- Performance counters are not cross platform;
+- we can't calculate sum of all processes CPU usage because we can't get TotalProcessorTime of all processes (as described above)
