@@ -65,7 +65,7 @@ State (type: string) - process state "running” or "sleeping".
 
 A [server-sent events](https://javascript.info/server-sent-events) approach is used to get automatic updates from the server every 3 second.
 
-To open a connection to the server you have to used [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) interface ([npm package](https://www.npmjs.com/package/eventsource))
+To open a connection to the server from a web client you have to use [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) interface (please install [npm package](https://www.npmjs.com/package/eventsource))
 
 How to use EventSource:
 
