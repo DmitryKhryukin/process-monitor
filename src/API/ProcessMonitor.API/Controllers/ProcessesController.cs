@@ -16,8 +16,6 @@ namespace ProcessMonitor.API.Controllers
         private readonly ILogger<ProcessesController> _logger;
         private readonly ISystemHealthInfoService _systemHealthInfoService;
 
-        //TODO: make configurable or pass as parameters?
-        private const int CpuMeasurementWindowSec = 1;
         private const int DelaySec = 3;
 
         public ProcessesController(ISystemHealthInfoService systemHealthInfoService, ILogger<ProcessesController> logger)

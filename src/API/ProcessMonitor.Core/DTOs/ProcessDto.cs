@@ -1,5 +1,3 @@
-using System;
-
 namespace ProcessMonitor.Core.DTOs
 {
     public class ProcessDto
