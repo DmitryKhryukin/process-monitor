@@ -2,6 +2,7 @@
 
 * Monitors currently running processes
 * Provides Server-Sent Events endpoing for automatic updates
+* Cross platform solution
 
 ## Prerequisites
 .NET Core 3.1
