@@ -40,6 +40,28 @@ data:
 }
 ```
 
+Provided processes info:
+
+```
+Id (type: int) - process id
+
+ProcessName (type: string)  - process name.
+
+TotalProcessorTime (type: double) - total processor time for this process in milliseconds.
+
+ThreadsCount (type: int) - number of threads that are running in the associated process.
+
+PhysicalMemoryUsage (type: int) - amount of physical memory, in bytes, allocated for the associated process.
+
+UserProcessorTime (type: double) - user processor time for this process in milliseconds.
+
+PrivilegedProcessorTime (type: double) - privileged processor time for this process in milliseconds.
+
+State (type: string) - process state "running” or "sleeping".
+```
+
+## Server-sent events
+
 A [server-sent events](https://javascript.info/server-sent-events) approach is used to get automatic updates from the server every 3 second.
 
 To open a connection to the server you have to used [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) interface ([npm package](https://www.npmjs.com/package/eventsource))
@@ -65,5 +87,5 @@ How to use EventSource:
 
 You can find a web client example [here](https://github.com/DmitryKhryukin/process-monitor/tree/master/src/Clients/Web)
 
-e.data fromat:
+
 
