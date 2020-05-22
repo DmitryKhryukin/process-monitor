@@ -13,11 +13,6 @@ eventSource.addEventListener("message", function (e) {
   var data = JSON.parse(e.data);
   
   let processTable = generateProcessTable(data.Processes);
-  let cpuLoad = data.CpuLoad.toFixed(2); 
-  let cpuLoadInfo = document.createElement("div");
-  cpuLoadInfo.innerHTML = `CPU Load: ${cpuLoad}%`;
-  
-  processesInfoList.appendChild(cpuLoadInfo);
   processesInfoList.appendChild(processTable);
 });
 

@@ -23,54 +23,37 @@ namespace ProcessMonitor.Core.Services
             _logger = logger;
         }
 
-        public async Task<SystemHealthInfoDto> GetSystemHealthInfo(int cpuMeasurementWindow, CancellationToken cancellationToken)
+        /// <summary>
+        /// have to use ProcessMapper.TryMapToDto method
+        /// because of .NET Core issue https://github.com/dotnet/runtime/issues/36777
+        /// </summary>
+        /// <returns></returns>
+        public SystemHealthInfoDto GetSystemHealthInfo()
         {
             var result = new SystemHealthInfoDto();
 
             var processes = Process.GetProcesses();
 
-            var verifiableProcesses = GetVerifiableProcesses(processes);
-            var cpuLoad = await GetTotalCpuLoadAsync(cpuMeasurementWindow,
-                verifiableProcesses,
-                cancellationToken);
-
-            return new SystemHealthInfoDto()
-            {
-                CpuLoad = cpuLoad,
-                Processes = verifiableProcesses
-                                                .Select(_processMapper.MapToDto)
-                                                .OrderBy(x => x.ProcessName)
-                                                .ToList()
-            };
-        }
-
-        /// <summary>
-        /// have to use this method
-        /// because it's a .NET Core bug related to TotalProcessorTime, UserProcessorTime and PrivilegedProcessorTime
-        /// https://github.com/dotnet/runtime/issues/36777
-        /// </summary>
-        /// <param name="processes"></param>
-        /// <returns></returns>
-        private IEnumerable<Process> GetVerifiableProcesses(Process[] processes)
-        {
-            var result = new List<Process>();
+            var mappedProcesses = new List<ProcessDto>();
 
             foreach (var process in processes)
             {
-                try
+                if (_processMapper.TryMapToDto(process, out ProcessDto processDto))
                 {
-                    var totalProcessTime = process.TotalProcessorTime;
-                    result.Add(process);
-                }
-                catch (Exception e)
-                {
-                    var message = $"ProcessName: {process.ProcessName}; ProcessId: {process.Id}; Error Message:{e.Message}";
-                    _logger.Log(LogLevel.Warning, message);
+                    mappedProcesses.Add(processDto);
                 }
             }
 
+            result.Processes = mappedProcesses.OrderBy(x => x.ProcessName).ToList();
+
+
             return result;
         }
+
+        #region Not Used
+
+        // can't get an access to TotalProcessorTime because of the following issue
+        // https://github.com/dotnet/runtime/issues/36777
 
         private async Task<double> GetTotalCpuLoadAsync(int cpuMeasurementWindowSec,
             IEnumerable<Process> processes,
@@ -92,5 +75,7 @@ namespace ProcessMonitor.Core.Services
         {
             return new TimeSpan(processes.Sum(r => r.TotalProcessorTime.Ticks));
         }
+
+        #endregion
     }
 }

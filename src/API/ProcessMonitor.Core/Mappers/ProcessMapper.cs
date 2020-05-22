@@ -1,4 +1,6 @@
+using System;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using ProcessMonitor.Core.DTOs;
 using ProcessMonitor.Core.Mappers.Interfaces;
 
@@ -6,7 +8,33 @@ namespace ProcessMonitor.Core.Mappers
 {
     public class ProcessMapper : IProcessMapper
     {
-        public ProcessDto MapToDto(Process process)
+        private readonly ILogger<ProcessMapper> _logger;
+
+        public ProcessMapper(ILogger<ProcessMapper> logger)
+        {
+            _logger = logger;
+        }
+
+        public bool TryMapToDto(Process process, out ProcessDto processDto)
+        {
+            var result = true;
+
+            try
+            {
+                processDto = MapToDto(process);
+            }
+            catch(Exception e)
+            {
+                result = false;
+                processDto = null;
+                var message = $"Process Mapping error. ProcessName: {process.ProcessName}; ProcessId: {process.Id}; Error Message:{e.Message}";
+                _logger.LogWarning(message);
+            }
+
+            return result;
+        }
+
+        private ProcessDto MapToDto(Process process)
         {
             return new ProcessDto()
             {

@@ -7,6 +7,6 @@ namespace ProcessMonitor.Core.Services.Interfaces
 {
     public interface ISystemHealthInfoService
     {
-        Task<SystemHealthInfoDto> GetSystemHealthInfo(int cpuMeasurementWindowSec, CancellationToken cancellationToken);
+        SystemHealthInfoDto GetSystemHealthInfo();
     }
 }

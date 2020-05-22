@@ -4,7 +4,11 @@ namespace ProcessMonitor.Core.DTOs
 {
     public class SystemHealthInfoDto
     {
-        public double CpuLoad { get; set; }
-        public IEnumerable<ProcessDto> Processes { get; set; }
+        public SystemHealthInfoDto()
+        {
+            Processes = new List<ProcessDto>();
+        }
+
+        public List<ProcessDto> Processes { get; set; }
     }
 }

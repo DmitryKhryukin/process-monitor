@@ -38,7 +38,7 @@ namespace ProcessMonitor.API.Controllers
                 _logger.Log(LogLevel.Information, "Get processes");
 
                 await Task.Delay(TimeSpan.FromSeconds(DelaySec), cancellationToken);
-                var systemHealthInfo = await _systemHealthInfoService.GetSystemHealthInfo(CpuMeasurementWindowSec, cancellationToken);
+                var systemHealthInfo = _systemHealthInfoService.GetSystemHealthInfo();
 
                 string jsonCustomer = JsonSerializer.Serialize(systemHealthInfo);
                 string data = $"data: {jsonCustomer}\n\n";
