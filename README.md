@@ -90,9 +90,9 @@ You can find a web client example [here](https://github.com/DmitryKhryukin/proce
 
 ## Known issues and roadblocks 
 
-We don't show all system processes because of the following issue:
+We don't show all system processes because of the following .NET Core issue:
 [Process Property TotalProcessorTime throws InvalidOperationException exception on macOS](https://github.com/dotnet/runtime/issues/36777)
 
 Currently we can't show CPU load because there is no way to calculate it using .NET Core on all platforms:
 - Performance counters are not cross platform;
-- we can't calculate sum of all processes CPU usage because we can't get TotalProcessorTime of all processes (as described above)
+- we can't calculate sum of all processes CPU usage because we can't get TotalProcessorTime of all processes (as described in the issue above)
