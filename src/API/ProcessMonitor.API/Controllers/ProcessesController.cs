@@ -33,8 +33,6 @@ namespace ProcessMonitor.API.Controllers
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                _logger.Log(LogLevel.Information, "Get processes");
-
                 await Task.Delay(TimeSpan.FromSeconds(DelaySec), cancellationToken);
                 var systemHealthInfo = _systemHealthInfoService.GetSystemHealthInfo();
 
