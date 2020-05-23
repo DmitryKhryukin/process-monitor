@@ -29,18 +29,20 @@ namespace ProcessMonitor.API.Controllers
         {
             Response.Headers.Add("Content-Type", "text/event-stream");
 
-            _logger.Log(LogLevel.Information, "Connection open");
+            _logger.LogInformation("Connection open");
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(TimeSpan.FromSeconds(DelaySec), cancellationToken);
+                await Task.Delay(TimeSpan.FromSeconds(DelaySec));
                 var systemHealthInfo = _systemHealthInfoService.GetSystemHealthInfo();
 
                 string jsonCustomer = JsonSerializer.Serialize(systemHealthInfo);
                 string data = $"data: {jsonCustomer}\n\n";
-                await Response.WriteAsync(data, cancellationToken: cancellationToken);
-                await Response.Body.FlushAsync(cancellationToken);
+                await Response.WriteAsync(data);
+                await Response.Body.FlushAsync();
             }
+
+            _logger.LogInformation("Connection closed");
         }
     }
 }
